@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Type;
 
 import lombok.AllArgsConstructor;
@@ -19,15 +21,17 @@ import pl.pss.PSS.model.enums.TransportType;
 public class  Delegation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int delegationId;
+    private long delegationId;
 
 	@Type(type = "text")
 	private String description;
 	
 	@Column(name = "date_time_start", nullable = false)
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime dateTimeStart;
 	
 	@Column(name = "date_time_stop", nullable = false)
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime dateTimeStop;
 	
 	@Column(name = "travel_diet_amount")
@@ -67,10 +71,8 @@ public class  Delegation {
 	@Column(name = "other_outlay_price")
 	private double otherOutlayPrice;
 	
-	@ManyToOne(
-            fetch = FetchType.EAGER,
-            cascade = CascadeType.ALL
-    )
+	@ManyToOne
+	@JsonIgnoreProperties({"delegations"})
     private User delegant;
 
 	public Delegation(String description, LocalDateTime dateTimeStart, LocalDateTime dateTimeStop,
