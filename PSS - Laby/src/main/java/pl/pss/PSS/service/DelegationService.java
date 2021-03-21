@@ -67,7 +67,7 @@ public class DelegationService {
 //        return false;
 //    }
 
-    public void changeDelegation(long delegationId, Delegation delegation)
+    public Delegation changeDelegation(long delegationId, Delegation delegation)
     {
         Optional<Delegation> delegationInBase = delegationRepository.findById(delegationId).stream().findFirst();
 
@@ -76,9 +76,9 @@ public class DelegationService {
             delegation.setDelegationId(delegationInBase.get().getDelegationId());
             delegation.setDelegant(delegationInBase.get().getDelegant());
 
-            delegationRepository.save(delegation);
+            return delegationRepository.save(delegation);
         }
-
+        return null;
     }
 
     public List<Delegation> getAllDelegations()
