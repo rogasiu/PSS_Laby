@@ -76,12 +76,17 @@ public class  Delegation {
     private User delegant;
 
 	public Delegation(String description, LocalDateTime dateTimeStart, LocalDateTime dateTimeStop,
+					  double travelDietAmount, int breakfastNumber, int dinnerNumber, int supperNumber,
 					  TransportType transportType, double ticketPrice,
 					  AutoCapacity autoCapacity, int km, double accomodationPrice,
 					  double otherTicketsPrice, double otherOutlayDesc, double otherOutlayPrice){
 		this.description = description;
 		this.dateTimeStart = dateTimeStart;
 		this.dateTimeStop = dateTimeStop;
+		this.travelDietAmount = travelDietAmount;
+		this.breakfastNumber = breakfastNumber;
+		this.dinnerNumber = dinnerNumber;
+		this.supperNumber = supperNumber;
 		this.transportType = transportType;
 		this.ticketPrice = ticketPrice;
 		this.autoCapacity = autoCapacity;
