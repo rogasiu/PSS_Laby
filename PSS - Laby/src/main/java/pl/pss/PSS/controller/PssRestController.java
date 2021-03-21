@@ -31,7 +31,7 @@ public class PssRestController {
     public void registerUser(
             @RequestParam("companyName") String companyName,
             @RequestParam("companyAddress") String companyAddress,
-            @RequestParam("companyName") String companyNip,
+            @RequestParam("companyNip") String companyNip,
             @RequestParam("name") String name,
             @RequestParam("lastName") String lastName,
             @RequestParam("email") String email,
@@ -47,12 +47,12 @@ public class PssRestController {
     }
 
     @PutMapping("/user/changePassword/id={userId}")
-    void changePassword(
+    boolean changePassword(
             @PathVariable("userId") long userId,
             @RequestParam("newPassword") String newPassword
     )
     {
-        userService.changePassword(userId,newPassword);
+        return userService.changePassword(userId,newPassword);
     }
 
     @DeleteMapping("/user/delete")
@@ -70,6 +70,10 @@ public class PssRestController {
             @RequestParam("dateTimeStart") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTimeStart,
             @RequestParam("dateTimeStop") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTimeStop,
             @RequestParam("transportType")TransportType transportType,
+            @RequestParam("travelDietAmount") double travelDietAmount,
+            @RequestParam("breakfastNumber") int breakfastNumber,
+            @RequestParam("dinnerNumber") int dinnerNumber,
+            @RequestParam("supperNumber") int supperNumber,
             @RequestParam("ticketPrice") double ticketPrice,
             @RequestParam("autoCapacity")AutoCapacity autoCapacity,
             @RequestParam("km") int km,
@@ -80,6 +84,7 @@ public class PssRestController {
             )
     {
         return delegationService.addDelegation(userId, new Delegation(description,dateTimeStart,dateTimeStop,
+                travelDietAmount, breakfastNumber, dinnerNumber, supperNumber,
                 transportType,ticketPrice,autoCapacity,km,accomodationPrice,otherTicketsPrice,
                 otherOutlayDesc,otherOutlayPrice));
     }
@@ -92,11 +97,15 @@ public class PssRestController {
         return delegationService.deleteDelegation(userId,delegationId);
     }
     @PutMapping("/delegation/change/id={delegationId}")
-    void changeDelegation(
+    Delegation changeDelegation(
             @PathVariable("delegationId") long delegationId,
             @RequestParam("description") String description,
-            @RequestParam("dateTimeStart (RRRR-MM-DDTHH:MM:SS.000)") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTimeStart,
-            @RequestParam("dateTimeStop (RRRR-MM-DDTHH:MM:SS.000)") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTimeStop,
+            @RequestParam("dateTimeStart") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTimeStart,
+            @RequestParam("dateTimeStop") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTimeStop,
+            @RequestParam("travelDietAmount") double travelDietAmount,
+            @RequestParam("breakfastNumber") int breakfastNumber,
+            @RequestParam("dinnerNumber") int dinnerNumber,
+            @RequestParam("supperNumber") int supperNumber,
             @RequestParam("transportType")TransportType transportType,
             @RequestParam("ticketPrice") double ticketPrice,
             @RequestParam("autoCapacity")AutoCapacity autoCapacity,
@@ -107,7 +116,8 @@ public class PssRestController {
             @RequestParam("otherOutlayPrice") double otherOutlayPrice
     )
     {
-        delegationService.changeDelegation(delegationId, new Delegation(description,dateTimeStart,dateTimeStop,
+        return delegationService.changeDelegation(delegationId, new Delegation(description,dateTimeStart,dateTimeStop,
+                travelDietAmount, breakfastNumber, dinnerNumber, supperNumber,
                 transportType,ticketPrice,autoCapacity,km,accomodationPrice,otherTicketsPrice,
                 otherOutlayDesc,otherOutlayPrice));
     }
@@ -122,7 +132,10 @@ public class PssRestController {
         return delegationService.getAllDelegationsOrderByDateStartDesc();
     }
     @GetMapping("/delegation/userSortDesc")
-    List<Delegation> getAllDelByUserOrderByDateStartDesc(long userId)
+    List<Delegation> getAllDelByUserOrderByDateStartDesc(
+            @RequestParam("userId") Long userId
+
+    )
     {
         return delegationService.getAllDelByUserOrderByDateStartDesc(userId);
     }
