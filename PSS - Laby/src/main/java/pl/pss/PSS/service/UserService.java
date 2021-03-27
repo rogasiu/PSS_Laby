@@ -23,7 +23,6 @@ public class UserService {
     //dodanie uzytkownika do bazy
     public User addUser(User user)
     {
-        System.out.println("Dodałem userka byku");
         return userRepository.save(user);
     }
 
@@ -38,7 +37,6 @@ public class UserService {
     {
         boolean isChanged = false;
         Optional<User> userOpt = userRepository.findById(userId);
-        System.out.println("WRRRR x2");
         if(userOpt.isPresent()){
             User userToChange = userOpt.get();
             userToChange.setPassword(newPassword);
@@ -60,9 +58,8 @@ public class UserService {
             }
 
             res = true;
-            System.out.println("ddd123123123123");
+            
             userRepository.deleteById(userId);
-            System.out.println("ddd");
         }
         return res;
     }
