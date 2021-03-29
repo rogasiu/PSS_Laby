@@ -4,11 +4,14 @@ import java.time.LocalDateTime;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Type;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import pl.pss.PSS.model.enums.AutoCapacity;
 import pl.pss.PSS.model.enums.TransportType;
 
@@ -19,15 +22,19 @@ import pl.pss.PSS.model.enums.TransportType;
 public class  Delegation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int delegationId;
+    private long delegationId;
 
 	@Type(type = "text")
 	private String description;
 	
 	@Column(name = "date_time_start", nullable = false)
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime dateTimeStart;
-	
+
 	@Column(name = "date_time_stop", nullable = false)
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime dateTimeStop;
 	
 	@Column(name = "travel_diet_amount")
@@ -67,19 +74,22 @@ public class  Delegation {
 	@Column(name = "other_outlay_price")
 	private double otherOutlayPrice;
 	
-	@ManyToOne(
-            fetch = FetchType.EAGER,
-            cascade = CascadeType.ALL
-    )
+	@ManyToOne
+	@JsonIgnoreProperties({"delegations"})
     private User delegant;
 
 	public Delegation(String description, LocalDateTime dateTimeStart, LocalDateTime dateTimeStop,
+					  double travelDietAmount, int breakfastNumber, int dinnerNumber, int supperNumber,
 					  TransportType transportType, double ticketPrice,
 					  AutoCapacity autoCapacity, int km, double accomodationPrice,
 					  double otherTicketsPrice, double otherOutlayDesc, double otherOutlayPrice){
 		this.description = description;
 		this.dateTimeStart = dateTimeStart;
 		this.dateTimeStop = dateTimeStop;
+		this.travelDietAmount = travelDietAmount;
+		this.breakfastNumber = breakfastNumber;
+		this.dinnerNumber = dinnerNumber;
+		this.supperNumber = supperNumber;
 		this.transportType = transportType;
 		this.ticketPrice = ticketPrice;
 		this.autoCapacity = autoCapacity;
