@@ -38,12 +38,10 @@ public class WebController {
     }
     @GetMapping("/login")
     public String loginPage(Model model, Authentication auth){
-        // model - komunikacja między warstwani BE - FE
-        // model.addAttribute(nazwa obiektu w FE, obiekt BE);
+        
         model.addAttribute("user", new User());
-        // auth == is null to niezalogowano : zalogowano
         model.addAttribute("isAuth", auth);
-        return "loginPage";     // widok z resources/templates i bez rozszerzenia html
+        return "loginPage";     
     }
     @GetMapping("/registration")
     public String registrationPage(Model model){
@@ -67,7 +65,7 @@ public class WebController {
         {
             model.addAttribute("user", user.get());
         }
-        return "userDetails";     // widok z resources/templates i bez rozszerzenia html
+        return "userDetails";     
     }
     //----------------------
     @GetMapping("/editUser")
@@ -118,7 +116,7 @@ public class WebController {
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         Optional<User> userOpt = userService.getAllUsers().stream().filter(x-> x.getEmail().equals(userDetails.getUsername())).findFirst();
         if(userOpt.isPresent()) {
-            System.out.println(oldpass);
+            
             if(!bCryptPasswordEncoder.matches(oldpass, userOpt.get().getPassword()))
             {
                 model.addAttribute("wrongOldPass", true);
@@ -172,12 +170,10 @@ public class WebController {
     }
     @PostMapping("/editDelegation")
     public String editDelegationPost(@ModelAttribute Delegation delegation, Authentication auth){
-        System.out.println("Tu sie cos wykonuje");
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         Optional<User> userOpt = userService.getAllUsers().stream().filter(x-> x.getEmail().equals(userDetails.getUsername())).findFirst();
         if(userOpt.isPresent()){
             Long userId = userOpt.get().getUserId();
-            System.out.println("deletagion "+delegation.getDelegationId());
             delegationService.addDelegation(userId, delegation);
         }
         return "redirect:/delegationList";
@@ -197,8 +193,6 @@ public class WebController {
                 return "deleteDelegationPage";
             }
         }
-
-
         return "redirect:/delegationList";
     }
     @PostMapping("/deleteDelegation")
@@ -211,10 +205,4 @@ public class WebController {
         }
         return "redirect:/delegationList";
     }
-//    @GetMapping("/")
-//    public String userDetails(ModelMap model)
-//    {
-//        model.put("name","imie");
-//        return "userDetails";
-//    }
 }
