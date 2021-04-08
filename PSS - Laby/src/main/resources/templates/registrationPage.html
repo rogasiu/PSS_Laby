@@ -9,8 +9,8 @@
 <body>
 <nav th:replace="fragments/static_fragments.html :: nav"></nav>
 <header th:replace="fragments/static_fragments.html :: header"></header>
+<div th:replace="fragments/static_fragments.html :: pageTitle('Registration form')"></div>
 
-<h1> Registration form </h1>
 <form th:action="@{/registration}" th:method="post" th:object="${user}">
     <label th:text="'Name'"></label><br>
     <input th:type="text" th:field="*{name}" th:placeholder="'input your name'" ><br>

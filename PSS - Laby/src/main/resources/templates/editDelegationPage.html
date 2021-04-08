@@ -9,8 +9,8 @@
 <body>
 <nav th:replace="fragments/static_fragments.html :: nav"></nav>
 <header th:replace="fragments/static_fragments.html :: header"></header>
+<div th:replace="fragments/static_fragments.html :: pageTitle('Edit Delegation')"></div>
 
-<h1> Edit Delegation </h1>
 <form th:action="@{/editDelegation}" th:method="post" th:object="${delegation}">
     <input th:type="hidden" th:field="*{delegationId}"><br>
     <label th:text="'Description'"></label><br>

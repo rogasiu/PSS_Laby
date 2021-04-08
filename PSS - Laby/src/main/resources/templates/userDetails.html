@@ -8,8 +8,8 @@
 <body>
 <nav th:replace="fragments/static_fragments.html :: nav"></nav>
 <header th:replace="fragments/static_fragments.html :: header"></header>
+<div th:replace="fragments/static_fragments.html :: pageTitle('User Details')"></div>
 
-    <h1> User Details </h1>
     <p><b>Name</b></p>
     <p th:text="${user.name}"/>
     <p><b>Last name</b></p>

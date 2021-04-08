@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -33,6 +34,7 @@ public class User {
 	private String companyAddress;
 	
 	@Column(name = "company_nip", unique = true, nullable = false)
+	@Size(min = 10, max = 10, message = "Wpisz 10 liczb NIP")
 	private String companyNip;
 
 	@Column(nullable = false)
@@ -42,10 +44,23 @@ public class User {
 	private String lastName;
 	
 	@Column(unique = true, nullable = false)
+	@Email(message = "Wpisz poprawny Email")
 	private String email;
 
 	@Column(nullable = false)
 	@JsonIgnore
+	@Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$",
+	message = "Hasło powinno składać się z 8 znaków zawierających w sobie: cyfrę, małą literę, wielką literę, znak specjalny")
+	/*
+		^                 # start-of-string
+		(?=.*[0-9])       # a digit must occur at least once
+		(?=.*[a-z])       # a lower case letter must occur at least once
+		(?=.*[A-Z])       # an upper case letter must occur at least once
+		(?=.*[@#$%^&+=])  # a special character must occur at least once
+		(?=\S+$)          # no whitespace allowed in the entire string
+		.{8,}             # anything, at least eight places though
+		$                 # end-of-string
+	 */
 	private String password;
 	
 	private Boolean status = true;
@@ -59,7 +74,7 @@ public class User {
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")}
     )
-	private Set<Role> roles = new HashSet<>() {{
+	private Set<@NotNull Role> roles = new HashSet<>() {{
 		add(new Role("ROLE_USER"));
 	}};
 
@@ -68,7 +83,7 @@ public class User {
 			fetch = FetchType.EAGER
     )
     @JsonIgnoreProperties({"delegant"})
-    private List<Delegation> delegations = new ArrayList<>();
+    private List<@NotNull Delegation> delegations = new ArrayList<>();
 
 	public User(String companyName, String companyAddress, String companyNip, String name, 
 	String lastName, String email, String password){

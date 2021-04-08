@@ -9,6 +9,8 @@
 <body>
 <nav th:replace="fragments/static_fragments.html :: nav"></nav>
 <header th:replace="fragments/static_fragments.html :: header"></header>
+<div th:replace="fragments/static_fragments.html :: pageTitle('Add Delegation')"></div>
+
 <h1> Edit Delegation </h1>
 <p>Do you really want to delete this delegation?</p>
 <p th:text="${delegationDesc}"\></p>

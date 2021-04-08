@@ -8,6 +8,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import pl.pss.PSS.model.Delegation;
@@ -16,6 +18,7 @@ import pl.pss.PSS.model.enums.AutoCapacity;
 import pl.pss.PSS.service.DelegationService;
 import pl.pss.PSS.service.UserService;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -38,10 +41,9 @@ public class WebController {
     }
     @GetMapping("/login")
     public String loginPage(Model model, Authentication auth){
-        
         model.addAttribute("user", new User());
         model.addAttribute("isAuth", auth);
-        return "loginPage";     
+        return "loginPage";
     }
     @GetMapping("/registration")
     public String registrationPage(Model model){
@@ -65,7 +67,7 @@ public class WebController {
         {
             model.addAttribute("user", user.get());
         }
-        return "userDetails";     
+        return "userDetails";
     }
     //----------------------
     @GetMapping("/editUser")
@@ -112,11 +114,11 @@ public class WebController {
         return "changePassword";
     }
     @PostMapping("/changePassword")
-    public String changePasswordPost(@RequestParam String oldpass, @RequestParam @Size(min = 5, max = 255, message = "Title must contain at least {min} to {max} characters") String newpass, @RequestParam String renewpass, Model model, Authentication auth){
+    public String changePasswordPost(@RequestParam String oldpass, @RequestParam String newpass, @RequestParam String renewpass, Model model, Authentication auth){
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         Optional<User> userOpt = userService.getAllUsers().stream().filter(x-> x.getEmail().equals(userDetails.getUsername())).findFirst();
         if(userOpt.isPresent()) {
-            
+            System.out.println(oldpass);
             if(!bCryptPasswordEncoder.matches(oldpass, userOpt.get().getPassword()))
             {
                 model.addAttribute("wrongOldPass", true);
@@ -141,9 +143,15 @@ public class WebController {
         return "addDelegationPage";
     }
     @PostMapping("/addDelegation")
-    public String addDelegationPost(@ModelAttribute Delegation delegation, Authentication auth){
+    public String addDelegationPost(@ModelAttribute @Valid Delegation delegation,BindingResult bindingResult, Authentication auth){
+        System.out.println("nie ma nic");
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         Optional<User> userOpt = userService.getAllUsers().stream().filter(x-> x.getEmail().equals(userDetails.getUsername())).findFirst();
+
+        if (bindingResult.hasErrors()) {
+            return "addDelegationPage";
+        }
+
         if(userOpt.isPresent()){
             Long userId = userOpt.get().getUserId();
             delegationService.addDelegation(userId, delegation);
@@ -170,10 +178,12 @@ public class WebController {
     }
     @PostMapping("/editDelegation")
     public String editDelegationPost(@ModelAttribute Delegation delegation, Authentication auth){
+        System.out.println("Tu sie cos wykonuje");
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         Optional<User> userOpt = userService.getAllUsers().stream().filter(x-> x.getEmail().equals(userDetails.getUsername())).findFirst();
         if(userOpt.isPresent()){
             Long userId = userOpt.get().getUserId();
+            System.out.println("deletagion "+delegation.getDelegationId());
             delegationService.addDelegation(userId, delegation);
         }
         return "redirect:/delegationList";
@@ -193,6 +203,8 @@ public class WebController {
                 return "deleteDelegationPage";
             }
         }
+
+
         return "redirect:/delegationList";
     }
     @PostMapping("/deleteDelegation")
@@ -205,4 +217,10 @@ public class WebController {
         }
         return "redirect:/delegationList";
     }
+//    @GetMapping("/")
+//    public String userDetails(ModelMap model)
+//    {
+//        model.put("name","imie");
+//        return "userDetails";
+//    }
 }
