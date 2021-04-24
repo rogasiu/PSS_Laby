@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<!--informacja dla dokumentu że wykorzystujemy zestaw bibliotek thymeleaf-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Delegation List</title>
+</head>
+<body>
+
+<nav th:replace="fragments/static_fragments.html :: nav"></nav>
+<header th:replace="fragments/static_fragments.html :: header"></header>
+<div th:replace="fragments/static_fragments.html :: pageTitle('Add Delegation')"></div>
+
+<h1> Delegation List </h1>
+<a th:href="@{/addDelegation}">Add delegation</a><br>
+<table border="1" style="text-align:center; margin-left: auto; margin-right: auto">
+    <thead>
+    <tr>
+        <th>Description</th>
+        <th>Date Time Star</th>
+        <th>Date Time Stop</th>
+        <th>Travel Diet Amount</th>
+        <th>BreakfastNumber</th>
+        <th>DinnerNumber</th>
+        <th>SupperNumber</th>
+        <th>TransportType</th>
+        <th>TicketPrice</th>
+        <th>AutoCapacity</th>
+        <th>Km</th>
+        <th>AccomodationPrice</th>
+        <th>OtherTicketsPrice</th>
+        <th>OtherOutlayDesc</th>
+        <th>OtherOutlayPrice</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="delegation : ${delegations}">
+        <td th:text="${delegation.getDescription()}">Description</td>
+        <td th:text="${#temporals.format(delegation.getDateTimeStart(), 'dd-MM-yyyy HH:mm')}">Date Time Start</td>
+        <td th:text="${#temporals.format(delegation.getDateTimeStop(), 'dd-MM-yyyy HH:mm')}">Date Time Stop</td>
+        <td th:text="${delegation.getTravelDietAmount()}">Travel Diet Amount</td>
+        <td th:text="${delegation.getBreakfastNumber()}">BreakfastNumber</td>
+        <td th:text="${delegation.getDinnerNumber()}">DinnerNumber</td>
+        <td th:text="${delegation.getSupperNumber()}">SupperNumber</td>
+        <td th:text="${delegation.getTransportType().getTransportType()}">TransportType</td>
+        <td th:text="${delegation.getTicketPrice()}">TicketPrice</td>
+        <td th:text="${delegation.getAutoCapacity().getAutoCapacity()}">AutoCapacity</td>
+
+        <td th:text="${delegation.getKm()}">Km</td>
+        <td th:text="${delegation.getAccomodationPrice()}">AccomodationPrice</td>
+        <td th:text="${delegation.getOtherTicketsPrice()}">OtherTicketsPrice</td>
+        <td th:text="${delegation.getOtherOutlayDesc()}">OtherOutlayDesc</td>
+        <td th:text="${delegation.getOtherOutlayPrice()}">OtherOutlayPrice</td>
+
+        <td th:if="${delegation.getDateTimeStart().isAfter(nowTime)}"><a th:href="@{/editDelegation/delegationId={id}(id=${delegation.getDelegationId()})}">Edit</a></td>
+        <td th:unless="${delegation.getDateTimeStart().isAfter(nowTime)}">[NO]</td>
+        <td th:if="${delegation.getDateTimeStart().isAfter(nowTime)}"><a th:href="@{/deleteDelegation/delegationId={id}(id=${delegation.getDelegationId()})}">Delete</a></td>
+        <td th:unless="${delegation.getDateTimeStart().isAfter(nowTime)}">[NO]</td>
+    </tr>
+    </tbody>
+</table>
+
+<footer th:replace="fragments/static_fragments.html :: footer"></footer>
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<!--informacja dla dokumentu że wykorzystujemy zestaw bibliotek thymeleaf-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Delegation</title>
+</head>
+<body>
+<nav th:replace="fragments/static_fragments.html :: nav"></nav>
+<header th:replace="fragments/static_fragments.html :: header"></header>
+<div th:replace="fragments/static_fragments.html :: pageTitle('Edit Delegation')"></div>
+
+<form th:action="@{/editDelegation}" th:method="post" th:object="${delegation}">
+    <input th:type="hidden" th:field="*{delegationId}"><br>
+    <label th:text="'Description'"></label><br>
+    <input th:type="text" th:field="*{description}" th:placeholder="'input your description'" ><br>
+    <label th:text="'Date Time Start'"></label><br>
+    <input type="datetime-local" th:field="*{dateTimeStart}" th:placeholder="'input your start'" ><br>
+    <label th:text="'Date Time Stop'"></label><br>
+    <input type="datetime-local" th:field="*{dateTimeStop}" th:placeholder="'input your stop'" ><br>
+    <label th:text="'Travel Diet Amount'"></label><br>
+    <input th:type="number" th:step="0.1" th:field="*{travelDietAmount}" th:placeholder="'input your diet amount'"><br>
+    <label th:text="'Breakfast Number'"></label><br>
+    <input th:type="number" th:field="*{breakfastNumber}" th:placeholder="'input your breakfast number'"><br>
+    <label th:text="'Dinner Number'"></label><br>
+    <input th:type="number" th:field="*{dinnerNumber}" th:placeholder="'input your dinner number'"><br>
+    <label th:text="'Supper Number'"></label><br>
+    <input th:type="number" th:field="*{supperNumber}" th:placeholder="'input your supper number'"><br>
+    <label th:text="'Transport Type'"></label><br>
+    <select name="transportType" th:field="*{transportType}">
+        <option th:each="transportType : ${T(pl.pss.PSS.model.enums.TransportType).values()}"
+                th:value="${transportType}" th:text="${transportType.getTransportType()}"
+                th:selected="${T(pl.pss.PSS.model.enums.TransportType).values() != null AND #arrays.contains(T(pl.pss.PSS.model.enums.TransportType).values(), transportType)}">
+
+        </option>
+    </select><br>
+    <label th:text="'Ticket Price'"></label><br>
+    <input th:type="number" th:step="0.1" th:field="*{ticketPrice}" th:placeholder="'input your ticket price'"><br>
+    <label th:text="'Auto Capacity'"></label><br>
+    <select name="autoCapacity" th:field="*{autoCapacity}">
+        <option th:each="autoCapacity : ${T(pl.pss.PSS.model.enums.AutoCapacity).values()}"
+                th:value="${autoCapacity}" th:text="${autoCapacity.getAutoCapacity()}"></option>
+    </select><br>
+    <label th:text="'Kilometers'"></label><br>
+    <input th:type="number" th:field="*{km}" th:placeholder="'input your kilometers'"><br>
+    <label th:text="'Accomodation Price'"></label><br>
+    <input th:type="number" th:step="0.1" th:field="*{accomodationPrice}" th:placeholder="'input your accomodation price'"><br>
+    <label th:text="'Other Tickets Price'"></label><br>
+    <input th:type="number" th:step="0.1" th:field="*{otherTicketsPrice}" th:placeholder="'input your other tickets price'"><br>
+    <label th:text="'Other Outlay Desc'"></label><br>
+    <input th:type="number" th:step="0.1" th:field="*{otherOutlayDesc}" th:placeholder="'input your other outlay desc'"><br>
+    <label th:text="'Other Outlay Price'"></label><br>
+    <input th:type="number" th:step="0.1" th:field="*{otherOutlayPrice}" th:placeholder="'input your other outlay price'"><br>
+
+    <input th:type="submit" th:value="Edit">
+</form>
+<footer th:replace="fragments/static_fragments.html :: footer"></footer>
+
+</body>
+</html>
