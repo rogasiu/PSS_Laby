@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<!--informacja dla dokumentu że wykorzystujemy zestaw bibliotek thymeleaf-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit User</title>
+</head>
+<body>
+<nav th:replace="fragments/static_fragments.html :: mainNav"></nav>
+<header th:replace="fragments/static_fragments.html :: header"></header>
+<div th:replace="fragments/static_fragments.html :: pageTitle('Edit User form')"></div>
+
+<form th:action="@{/editUser}" th:method="post" th:object="${user}">
+    <label th:text="'Name'"></label><br>
+    <input th:type="text" th:field="*{name}" th:placeholder="'input your name'" ><br>
+    <label th:text="'Last name'"></label><br>
+    <input th:type="text" th:field="*{lastName}" th:placeholder="'input your lastname'" ><br>
+    <label th:text="'Company name'"></label><br>
+    <input th:type="text" th:field="*{companyName}" th:placeholder="'input your company name'"><br>
+    <label th:text="'Company address'"></label><br>
+    <input th:type="text" th:field="*{companyAddress}" th:placeholder="'input your company address'"><br>
+    <label th:text="'Company Nip'"></label><br>
+    <input th:type="text" th:field="*{companyNip}" th:placeholder="'input your company Nip'"><br>
+    <input th:type="submit" th:value="Edit">
+</form>
+<footer th:replace="fragments/static_fragments.html :: footer"></footer>
+</body>
+</html>

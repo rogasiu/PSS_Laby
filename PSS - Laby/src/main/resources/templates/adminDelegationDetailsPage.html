@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<!--informacja dla dokumentu że wykorzystujemy zestaw bibliotek thymeleaf-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Show Delegation Details</title>
+</head>
+<body>
+<nav th:replace="fragments/static_fragments.html :: adminNav"></nav>
+<header th:replace="fragments/static_fragments.html :: header"></header>
+<div th:replace="fragments/static_fragments.html :: pageTitle('Delegation Details')"></div>
+
+<p><b>Description</b></p>
+<p th:text="${delegation.description}"/>
+<p><b>Date Start</b></p>
+<p th:text="${#temporals.format(delegation.getDateTimeStart(), 'dd-MM-yyyy HH:mm')}"/>
+<p><b>Date Stop</b></p>
+<p th:text="${#temporals.format(delegation.getDateTimeStop(), 'dd-MM-yyyy HH:mm')}"/>
+<p><b>Travel Diet Amount</b></p>
+<p th:text="${delegation.travelDietAmount}"/>
+<p><b>Breakfast Number</b></p>
+<p th:text="${delegation.breakfastNumber}"/>
+<p><b>Dinner Number</b></p>
+<p th:text="${delegation.dinnerNumber}"/>
+<p><b>Supper Number</b></p>
+<p th:text="${delegation.supperNumber}"/>
+<p><b>Transport Type</b></p>
+<p th:text="${delegation.transportType.getTransportType()}"/>
+<p><b>Ticket Price</b></p>
+<p th:text="${delegation.ticketPrice}"/>
+<p><b>Auto Capacity</b></p>
+<p th:text="${delegation.autoCapacity.getAutoCapacity()}"/>
+<p><b>Kilometers</b></p>
+<p th:text="${delegation.km}"/>
+<p><b>Accomodation Price</b></p>
+<p th:text="${delegation.accomodationPrice}"/>
+<p><b>Other Tickets Price</b></p>
+<p th:text="${delegation.otherTicketsPrice}"/>
+<p><b>Other Outlay Desc</b></p>
+<p th:text="${delegation.otherOutlayDesc}"/>
+<p><b>Other Outlay Price</b></p>
+<p th:text="${delegation.otherOutlayPrice}"/>
+
+<footer th:replace="fragments/static_fragments.html :: footer"></footer>
+
+</body>
+</html>

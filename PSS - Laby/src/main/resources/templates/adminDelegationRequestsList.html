@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<!--informacja dla dokumentu że wykorzystujemy zestaw bibliotek thymeleaf-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Delegation List</title>
+</head>
+<body>
+
+<nav th:replace="fragments/static_fragments.html :: adminNav"></nav>
+<header th:replace="fragments/static_fragments.html :: header"></header>
+<div th:replace="fragments/static_fragments.html :: pageTitle('Pending Delegation Request')"></div>
+
+<h1> Delegation List </h1>
+<table border="1" style="text-align:center; margin-left: auto; margin-right: auto">
+    <thead>
+    <tr>
+        <th>Description</th>
+        <th>Type</th>
+        <th>Accept</th>
+        <th>Decline</th>
+        <th>Details</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="delegation : ${delegations}">
+        <td th:text="${delegation.getDescription()}">Description</td>
+        <td th:if="${delegation.isDelegationPending}">ACCEPTATION REQUEST</td>
+        <td th:if="${delegation.isDelegationPending}"><a th:href="@{/admin/acceptDelegation/delegationId={id}/status=true(id=${delegation.getDelegationId()})}">ACCEPT</a></td>
+        <td th:if="${delegation.isDelegationPending}"><a th:href="@{/admin/acceptDelegation/delegationId={id}/status=false(id=${delegation.getDelegationId()})}">DECLINE</a></td>
+        <td th:if="${delegation.isDelegationAccepted and delegation.isDelegationRequestCancel}">CANCEL ACCEPTATION REQUEST</td>
+        <td th:if="${delegation.isDelegationAccepted and delegation.isDelegationRequestCancel}"><a th:href="@{/admin/cancelDelegation/delegationId={id}/status=true(id=${delegation.getDelegationId()})}">ACCEPT</a></td>
+        <td th:if="${delegation.isDelegationAccepted and delegation.isDelegationRequestCancel}"><a th:href="@{/admin/cancelDelegation/delegationId={id}/status=false(id=${delegation.getDelegationId()})}">DECLINE</a></td>
+        <td><a th:href="@{/admin/delegationDetails/delegationId={id}(id=${delegation.getDelegationId()})}">SHOW</a></td>
+    </tr>
+    </tbody>
+</table>
+
+<footer th:replace="fragments/static_fragments.html :: footer"></footer>
+
+</body>
+</html>

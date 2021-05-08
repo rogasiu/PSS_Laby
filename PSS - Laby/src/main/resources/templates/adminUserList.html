@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<!--informacja dla dokumentu że wykorzystujemy zestaw bibliotek thymeleaf-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Delegation List</title>
+</head>
+<body>
+
+<nav th:replace="fragments/static_fragments.html :: adminNav"></nav>
+<header th:replace="fragments/static_fragments.html :: header"></header>
+<div th:replace="fragments/static_fragments.html :: pageTitle('User List')"></div>
+
+<table border="1" style="text-align:center; margin-left: auto; margin-right: auto">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>LastName</th>
+        <th>Company Name</th>
+        <th>Email</th>
+        <th>Action</th>
+        <th>Action</th>
+        <th>Admin</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.getName}">Name</td>
+        <td th:text="${user.getLastName}">LastName</td>
+        <td th:text="${user.getCompanyName}">Company Name</td>
+        <td th:text="${user.getEmail}">Email</td>
+
+
+        <td><a th:href="@{/admin/delegationList/userId={id}(id=${user.getUserId()})}">Show Delegations</a></td>
+        <td><a th:href="@{/admin/deleteUser/userId={id}(id=${user.getUserId()})}">Delete User</a></td>
+        <td th:unless="${user.isAdmin()}"><a th:href="@{/admin/makeAdmin/userId={id}(id=${user.getUserId()})}">Make Admin</a></td>
+        <td th:if="${user.isAdmin()}">YES</td>
+
+    </tr>
+    </tbody>
+</table>
+
+<footer th:replace="fragments/static_fragments.html :: footer"></footer>
+
+</body>
+</html>

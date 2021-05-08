@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <nav th:replace="fragments/static_fragments.html :: mainNav"></nav>
+    <header th:replace="fragments/static_fragments.html :: header"></header>
+    <div th:replace="fragments/static_fragments.html :: pageTitle('Strona główna')"></div>
+    Strona główna
+    <div th:replace="fragments/static_fragments.html :: catSlider('cat1.jpg', 'cat3.jpg', 'cat4.jpg')"></div>
+    <footer th:replace="fragments/static_fragments.html :: footer"></footer>
+</body>
+</html>
