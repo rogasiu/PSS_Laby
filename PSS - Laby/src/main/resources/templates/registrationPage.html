@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<!--informacja dla dokumentu że wykorzystujemy zestaw bibliotek thymeleaf-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}">
+</head>
+<body>
+<header th:replace="fragments/static_fragments.html :: header"></header>
+<div th:replace="fragments/static_fragments.html :: pageTitle('Registration form')"></div>
+
+<form th:action="@{/registration}" th:method="post" th:object="${user}">
+    <label th:text="'Name'"></label><br>
+    <input th:type="text" th:field="*{name}" th:placeholder="'input your name'" ><br>
+    <label th:text="'Last name'"></label><br>
+    <input th:type="text" th:field="*{lastName}" th:placeholder="'input your lastname'" ><br>
+    <label th:text="'Email'"></label><br>
+    <input th:type="email" th:field="*{email}" th:placeholder="'input your email'" ><br>
+    <label th:text="'Password'"></label><br>
+    <input th:type="password" th:field="*{password}" th:placeholder="'input your password'"><br>
+    <label th:text="'Company name'"></label><br>
+    <input th:type="text" th:field="*{companyName}" th:placeholder="'input your company name'"><br>
+    <label th:text="'Company address'"></label><br>
+    <input th:type="text" th:field="*{companyAddress}" th:placeholder="'input your company address'"><br>
+    <label th:text="'Company Nip'"></label><br>
+    <input th:type="text" th:field="*{companyNip}" th:placeholder="'input your company Nip'"><br>
+    <input th:type="submit" th:value="register">
+</form>
+<footer th:replace="fragments/static_fragments.html :: footer"></footer>
+</body>
+</html>

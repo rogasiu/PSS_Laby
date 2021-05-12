@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+<body>
+<nav id="mainNav" th:fragment="mainNav">
+    <ul>
+        <li>
+            <a th:href="@{/}">Home</a>
+        </li>
+        <li style="float:right" >
+            <a th:href="@{/logout}">logout</a>
+        </li>
+        <!--
+        <li>
+            <a th:href="@{/login}">login</a>
+        </li>
+        -->
+        <li>
+            <a th:href="@{/userDetails}">user details</a>
+        </li>
+        <li>
+            <a th:href="@{/editUser}">user edit</a>
+        </li>
+        <li>
+            <a th:href="@{/changePassword}">change password</a>
+        </li>
+        <li>
+            <a th:href="@{/delegationList}">delegation list</a>
+        </li>
+    </ul>
+</nav>
+<nav id="adminNav" th:fragment="adminNav">
+    <ul>
+        <li>
+            <a th:href="@{/admin/}">Home</a>
+        </li>
+        <li>
+            <a th:href="@{/admin/showDelegationRequests}">Show Delegation Requests</a>
+        </li>
+        <li>
+            <a th:href="@{/admin/userList}">User List</a>
+        </li>
+    </ul>
+</nav>
+<header>
+    <img th:src="@{/cat0.jpg}">
+</header>
+
+<footer>
+    <hr>
+    <p class="copyright text-muted">Proudly made by UTP students with <3</p>
+</footer>
+
+<div th:fragment="catSlider(cat1, cat2, cat3)">
+    <div id="sliderContent"></div>
+    <script>
+        var catOne = "[[${cat1}]]";
+        var catTwo = "[[${cat2}]]";
+        var catThree = "[[${cat3}]]";
+
+        var currentCat = 0;
+        function sliderFill(num)
+        {
+            if(num == 0)
+            {
+                document.getElementById("sliderContent").innerHTML = "<img src=\""+catOne+"\">";
+            }else if(num == 1)
+            {
+                document.getElementById("sliderContent").innerHTML = "<img src=\""+catTwo+"\">";
+            }else if(num == 2)
+            {
+                document.getElementById("sliderContent").innerHTML = "<img src=\""+catThree+"\">";
+            }
+        }
+        sliderFill(currentCat);
+        setInterval(function(){ currentCat+=1; if(currentCat>2){currentCat=0;} sliderFill(currentCat); }, 5000);
+    </script>
+</div>
+<div th:fragment="pageTitle(title)">
+    <br>
+    😺😺😺😺😺😺😺😺😺😺
+    <h1><b><p th:text="${title}"/></b></h1>
+    😺😺😺😺😺😺😺😺😺😺<br><br>
+</div>
+<div th:fragment="mapCount">
+    <a onclick="showAutomatic()">[Automatic Distance]</a><br>
+    <div id="liczenie" style="border:solid; display: none">
+        <h1>Automatic distance between</h1>
+        <label>Orgin place</label><br>
+        <input type="text" id="origin"><br>
+        <label>Destinition place</label><br>
+        <input type="text" id="destinition"><br>
+        <input type="button" value="Count" onclick="countKM()"></input>
+
+        <b id="waitAutomatic" style="color:red; display:none">WAIT!!!</b>
+    </div>
+</div>
+</body>
+</html>

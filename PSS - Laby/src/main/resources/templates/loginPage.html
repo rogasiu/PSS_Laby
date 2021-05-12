@@ -1,0 +1,36 @@
+
+<!DOCTYPE html>
+<!--informacja dla dokumentu że wykorzystujemy zestaw bibliotek thymeleaf-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}">
+</head>
+<body>
+<header th:replace="fragments/static_fragments.html :: header"></header>
+
+<p th:if="${isAuth == null}"> not logged </p>
+<p th:if="${isAuth != null}"> logged </p>
+<h1> Login form </h1>
+<form th:action="@{/login_process}" th:method="post">
+    <!--type -> typ inputu-->
+    <!--name -> nazwa parametru-->
+    <input th:type="text" th:placeholder="'input your email'" th:name="email"><br>
+    <input th:type="password" th:placeholder="'input your password'" th:name="password"><br>
+    <input th:type="submit" th:value="login">
+</form>
+<hr/>
+<h3>Zaloguj się przy użyciu:</h3>
+<th:block th:if="${! oauth2.isEmpty()}">
+    <p th:each="client : ${oauth2}">
+        <a th:href="@{/oauth2/authorization/{id}(id=${client.registrationId})}" th:text="${client.clientName}"/>
+    </p>
+
+</th:block>
+<br>
+<h3>Tradycyjne rejestrowanie</h3>
+<a th:href="@{/registration}">Register</a>
+<footer th:replace="fragments/static_fragments.html :: footer"></footer>
+</body>
+</html>

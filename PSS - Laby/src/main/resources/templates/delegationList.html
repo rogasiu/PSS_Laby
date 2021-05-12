@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<!--informacja dla dokumentu że wykorzystujemy zestaw bibliotek thymeleaf-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Delegation List</title>
+    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}">
+</head>
+<body>
+
+<nav th:replace="fragments/static_fragments.html :: mainNav"></nav>
+<header th:replace="fragments/static_fragments.html :: header"></header>
+<div th:replace="fragments/static_fragments.html :: pageTitle('Delegation List')"></div>
+
+<a th:href="@{/addDelegation}">Add delegation</a><br><br>
+<table id="tableStyle" border="1">
+    <thead>
+    <tr>
+        <th>Description</th>
+        <th>Date Time Star</th>
+        <th>Date Time Stop</th>
+        <th>Travel Diet Amount</th>
+        <th>Breakfast Number</th>
+        <th>Dinner Number</th>
+        <th>Supper Number</th>
+        <th>Transport Type</th>
+        <th>Ticket Price</th>
+        <th>Auto Capacity</th>
+        <th>Km</th>
+        <th>Accomodation Price</th>
+        <th>Other Tickets Price</th>
+        <th>Other Outlay Desc</th>
+        <th>Other Outlay Price</th>
+        <th>Edit</th>
+        <th>Delete</th>
+        <th>PDF</th>
+        <th>Print</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="delegation : ${delegations}">
+        <td th:text="${delegation.getDescription()}">Description</td>
+        <td th:text="${#temporals.format(delegation.getDateTimeStart(), 'dd-MM-yyyy HH:mm')}">Date Time Start</td>
+        <td th:text="${#temporals.format(delegation.getDateTimeStop(), 'dd-MM-yyyy HH:mm')}">Date Time Stop</td>
+        <td th:text="${delegation.getTravelDietAmount()}">Travel Diet Amount</td>
+        <td th:text="${delegation.getBreakfastNumber()}">BreakfastNumber</td>
+        <td th:text="${delegation.getDinnerNumber()}">DinnerNumber</td>
+        <td th:text="${delegation.getSupperNumber()}">SupperNumber</td>
+        <td th:text="${delegation.getTransportType().getTransportType()}">TransportType</td>
+        <td th:text="${delegation.getTicketPrice()}">TicketPrice</td>
+        <td th:text="${delegation.getAutoCapacity().getAutoCapacity()}">AutoCapacity</td>
+
+        <td th:text="${delegation.getKm()}">Km</td>
+        <td th:text="${delegation.getAccomodationPrice()}">AccomodationPrice</td>
+        <td th:text="${delegation.getOtherTicketsPrice()}">OtherTicketsPrice</td>
+        <td th:text="${delegation.getOtherOutlayDesc()}">OtherOutlayDesc</td>
+        <td th:text="${delegation.getOtherOutlayPrice()}">OtherOutlayPrice</td>
+
+        <td th:if="${delegation.getDateTimeStart().isAfter(nowTime)}"><a th:href="@{/editDelegation/delegationId={id}(id=${delegation.getDelegationId()})}">Edit</a></td>
+        <td th:unless="${delegation.getDateTimeStart().isAfter(nowTime)}">[NO]</td>
+        <td th:if="${delegation.getDateTimeStart().isAfter(nowTime)}"><a th:href="@{/deleteDelegation/delegationId={id}(id=${delegation.getDelegationId()})}">Delete</a></td>
+        <td th:unless="${delegation.getDateTimeStart().isAfter(nowTime)}">[NO]</td>
+        <td><a th:href="@{/delegationPDF/delegationId={id}(id=${delegation.getDelegationId()})}">PDF</a></td>
+        <td><a th:href="@{/delegationPrint/delegationId={id}(id=${delegation.getDelegationId()})}">Print</a></td>
+        <td th:if="${!delegation.isDelegationPending() and !delegation.isDelegationAccepted() and !delegation.isDelegationRequestCancel()}"><a th:href="@{/sendAcceptDelegation/delegationId={id}(id=${delegation.getDelegationId()})}">SEND TO ACCEPT</a></td>
+        <td th:if="${!delegation.isDelegationPending() and delegation.isDelegationAccepted() and !delegation.isDelegationRequestCancel()}"><a th:href="@{/sendDeclineDelegation/delegationId={id}(id=${delegation.getDelegationId()})}">SEND DECLINE REQUEST</a></td>
+        <td th:unless="${(!delegation.isDelegationPending() and !delegation.isDelegationAccepted() and !delegation.isDelegationRequestCancel()) or (!delegation.isDelegationPending() and delegation.isDelegationAccepted() and !delegation.isDelegationRequestCancel())}">NONE</td>
+    </tr>
+    </tbody>
+</table>
+
+<footer th:replace="fragments/static_fragments.html :: footer"></footer>
+
+</body>
+</html>

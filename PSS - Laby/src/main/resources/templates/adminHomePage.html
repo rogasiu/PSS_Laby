@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}">
+</head>
+<body>
+    <nav th:replace="fragments/static_fragments.html :: adminNav"></nav>
+    <header th:replace="fragments/static_fragments.html :: header"></header>
+    <div th:replace="fragments/static_fragments.html :: pageTitle('Strona główna')"></div>
+    Strona główna admina
+    <footer th:replace="fragments/static_fragments.html :: footer"></footer>
+</body>
+</html>

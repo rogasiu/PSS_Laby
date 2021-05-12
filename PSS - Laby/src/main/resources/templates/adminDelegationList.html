@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<!--informacja dla dokumentu że wykorzystujemy zestaw bibliotek thymeleaf-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Delegation List</title>
+    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}">
+</head>
+<body>
+
+<nav th:replace="fragments/static_fragments.html :: adminNav"></nav>
+<header th:replace="fragments/static_fragments.html :: header"></header>
+<div th:replace="fragments/static_fragments.html :: pageTitle('Delegation List')"></div>
+
+Delegations of <b th:text="${namesurname}"></b>
+
+<table border="1" style="text-align:center; margin-left: auto; margin-right: auto">
+    <thead>
+    <tr>
+        <th>Description</th>
+        <th>Date Time Star</th>
+        <th>Date Time Stop</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="delegation : ${delegations}">
+        <td th:text="${delegation.getDescription()}">Description</td>
+        <td th:text="${#temporals.format(delegation.getDateTimeStart(), 'dd-MM-yyyy HH:mm')}">Date Time Start</td>
+        <td th:text="${#temporals.format(delegation.getDateTimeStop(), 'dd-MM-yyyy HH:mm')}">Date Time Stop</td>
+
+        <td><a th:href="@{/admin/editDelegation/delegationId={id}(id=${delegation.getDelegationId()})}">Edit</a></td>
+        <td><a th:href="@{/admin/deleteDelegation/delegationId={id}(id=${delegation.getDelegationId()})}">Delete</a></td>
+
+    </tr>
+    </tbody>
+</table>
+
+<footer th:replace="fragments/static_fragments.html :: footer"></footer>
+
+</body>
+</html>

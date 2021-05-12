@@ -1,0 +1,114 @@
+html {
+  font-family: "Lucida Sans", sans-serif;
+}
+
+input, select {
+    width: 350px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/*form input style*/
+input[type=submit] {
+    width: 350px;
+    background-color: #ff8000;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+/*navbar option*/
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  top: 0;
+  overflow: hidden;
+  background-color: #333;
+  position: sticky;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 16px 16px;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color: #111;
+}
+/* End Navbar option*/
+
+body {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    color: white;
+    background:
+        radial-gradient(transparent, black),
+        url("bck.jpg");
+}
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 300px;
+}
+
+/*table style ID*/
+#tableStyle {
+  border-collapse: collapse;
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#tableStyle td, #tableStyle th {
+  border: 1px solid #ddd;
+  padding: 7px;
+  font-size: 12px;
+}
+
+#tableStyle tr:nth-child(even){background-color: #383838;
+}
+
+#tableStyle th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: left;
+  background-color: #ff8000;
+  color: white;
+  font-size: 14px;
+}
+/* End table option*/
+
+
+/*link style*/
+a:link {
+  color: #ff8000;
+}
+
+a:visited {
+  color: #ff8000;
+}
+
+a:hover {
+  color: #028bfa;
+}
+
+a:active {
+  color: white;
+}

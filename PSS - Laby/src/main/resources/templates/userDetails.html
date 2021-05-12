@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Details</title>
+    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}">
+</head>
+<body>
+<nav th:replace="fragments/static_fragments.html :: mainNav"></nav>
+<header th:replace="fragments/static_fragments.html :: header"></header>
+<div th:replace="fragments/static_fragments.html :: pageTitle('User Details')"></div>
+    <p><h3>Name</h3></p>
+    <p th:text="${user.name}"/>
+    <p><h3>Last name</h3></p>
+    <p th:text="${user.lastName}"/>
+    <p><h3>Email</h3></p>
+    <p th:text="${user.email}"/>
+    <p><h3>Company name</h3></p>
+    <p th:text="${user.companyName}"/>
+    <p><h3>Company address</h3></p>
+    <p th:text="${user.companyAddress}"/>
+    <p><h3>Company Nip</h3></p>
+    <p th:text="${user.companyNip}"/>
+<footer th:replace="fragments/static_fragments.html :: footer"></footer>
+</body>
+</html>

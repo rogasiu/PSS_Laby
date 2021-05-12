@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Activation</title>
+    <link rel="stylesheet" href="../static/style.css" th:href="@{/style.css}">
+</head>
+<body>
+    <div th:replace="fragments/static_fragments.html :: pageTitle('Strona aktywacji')"></div>
+    <div th:if="${activated}">Konto zostało aktywowane. Możesz teraz się zalogować. <a th:href="@{/login}">[TUTAJ]</a></div>
+    <div th:unless="${activated}">Błąd przy aktywacji użytkownika!</div>
+</body>
+</html>
