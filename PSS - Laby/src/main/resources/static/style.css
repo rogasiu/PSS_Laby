@@ -24,7 +24,7 @@ input[type=submit] {
     cursor: pointer;
 }
 /*navbar option*/
-ul {
+.menu ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -34,11 +34,11 @@ ul {
   position: sticky;
 }
 
-li {
+.menu li {
   float: left;
 }
 
-li a {
+.menu li {
   display: block;
   color: white;
   text-align: center;
@@ -46,7 +46,7 @@ li a {
   text-decoration: none;
 }
 
-li a:hover {
+.menu li a:hover {
   background-color: #111;
 }
 /* End Navbar option*/

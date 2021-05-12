@@ -12,6 +12,12 @@
 <div th:replace="fragments/static_fragments.html :: pageTitle('Registration form')"></div>
 
 <form th:action="@{/registration}" th:method="post" th:object="${user}">
+    <div style="color: red;" th:if="${#fields.hasErrors('*')}">
+        <p><strong>Errors</strong></p>
+        <ul>
+            <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+        </ul>
+    </div>
     <label th:text="'Name'"></label><br>
     <input th:type="text" th:field="*{name}" th:placeholder="'input your name'" ><br>
     <label th:text="'Last name'"></label><br>

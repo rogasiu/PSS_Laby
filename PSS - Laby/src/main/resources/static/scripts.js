@@ -2,7 +2,7 @@ function countKM(){
     var origin = document.getElementById("origin").value;
     var destination = document.getElementById("destinition").value;
 
-    let url = 'http://dev.virtualearth.net/REST/V1/Routes/Driving?o=xml&wp.0='+origin+'&wp.1='+destination+'&avoid=minimizeTolls&key=AhMTWu5HzyVnzcbEuUcGmNTsdDEM2IQi3yssBtvrTg7KEvi8WCHn1z978QShXK1Z';
+    let url = 'https://dev.virtualearth.net/REST/V1/Routes/Driving?o=xml&wp.0='+origin+'&wp.1='+destination+'&avoid=minimizeTolls&key=AhMTWu5HzyVnzcbEuUcGmNTsdDEM2IQi3yssBtvrTg7KEvi8WCHn1z978QShXK1Z';
     console.log(url);
 
     showWaitInAutomatic(true);

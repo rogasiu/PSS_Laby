@@ -12,6 +12,7 @@
 
 <p th:if="${isAuth == null}"> not logged </p>
 <p th:if="${isAuth != null}"> logged </p>
+
 <h1> Login form </h1>
 <form th:action="@{/login_process}" th:method="post">
     <!--type -> typ inputu-->

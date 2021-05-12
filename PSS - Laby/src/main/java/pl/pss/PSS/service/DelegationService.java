@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -78,7 +79,7 @@ public class DelegationService {
 
     public Delegation changeDelegation(long delegationId, Delegation delegation)
     {
-        Optional<Delegation> delegationInBase = delegationRepository.findById(delegationId).stream().findFirst();
+        Optional<Delegation> delegationInBase = delegationRepository.findById(delegationId);
 
         if(delegationInBase.isPresent())
         {
@@ -102,12 +103,12 @@ public class DelegationService {
 
     public List<Delegation> getAllDelByUserOrderByDateStartDesc(long userId)
     {
-        Optional<User> user = userRepository.findById(userId).stream().findFirst();
+        Optional<User> user = userRepository.findById(userId);
 
         if(user.isPresent())
         {
-            List<Delegation> delList = user.get().getDelegations();
-            delList.sort((a,b) -> b.getDateTimeStart().compareTo(a.getDateTimeStart()));
+            List<Delegation> delList = user.get().getDelegations().stream().distinct().collect(Collectors.toList());
+            delList.sort((a,b) -> a.getDateTimeStart().compareTo(b.getDateTimeStart()));
             return delList;
         }
 

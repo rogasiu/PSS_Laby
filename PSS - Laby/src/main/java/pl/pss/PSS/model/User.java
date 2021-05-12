@@ -72,7 +72,7 @@ public class User {
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")}
     )
-	private Set<@NotNull Role> roles = new HashSet<>() {{
+	private Set<@NotNull Role> roles = new HashSet<@NotNull Role>() {{
 		add(new Role("ROLE_USER"));
 	}};
 

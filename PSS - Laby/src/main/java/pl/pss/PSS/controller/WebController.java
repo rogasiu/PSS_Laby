@@ -105,14 +105,20 @@ public class WebController {
         return "registrationPage";
     }
     @PostMapping("/registration")
-    public String registration(@ModelAttribute User user){
+    public String registration(@ModelAttribute @Valid User user,BindingResult bindingResult){
+        if (bindingResult.hasErrors()) {
+            return "registrationPage";
+        }
+
         user.setStatus(true);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setActivateCode(RandomStringUtils.random(10, true, true));
         User inBaseUser = userService.addUser(user);
 
-        String link = "localhost:8080/activation/userHash="+DigestUtils.sha256Hex(Long.toString(inBaseUser.getUserId()))+"/activationHash="+DigestUtils.sha256Hex(inBaseUser.getActivateCode());
-        emailSender.sendEmail(inBaseUser.getEmail(), "Delegacja wysłana do akceptacji",
+
+
+        String link = "https://pss2021.herokuapp.com/activation/userHash="+DigestUtils.sha256Hex(Long.toString(inBaseUser.getUserId()))+"/activationHash="+DigestUtils.sha256Hex(inBaseUser.getActivateCode());
+        emailSender.sendEmail(inBaseUser.getEmail(), "Aktywacja konta",
                 "Cześć! <br> "
                         + "Aktywuj konto linkiem <a href=\""+link+"\"></a><br>" +
                         "Jeśli link nie działa, wpisz ręcznie: "+link);
@@ -258,12 +264,11 @@ public class WebController {
     @GetMapping("/addDelegation")
     public String addDelegation(Model model){
         model.addAttribute("delegation", new Delegation());
-        model.addAttribute("APIKey", env.getProperty("mapy.api"));
         return "addDelegationPage";
     }
+    //sdsd
     @PostMapping("/addDelegation")
     public String addDelegationPost(@ModelAttribute @Valid Delegation delegation,BindingResult bindingResult, Authentication auth){
-        System.out.println("nie ma nic");
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         Optional<User> userOpt = userService.getAllUsers().stream().filter(x-> x.getEmail().equals(userDetails.getUsername())).findFirst();
 
@@ -278,7 +283,9 @@ public class WebController {
         return "redirect:/delegationList";
     }
     @GetMapping("/editDelegation/delegationId={delegationId}")
-    public String editDelegation(@PathVariable Long delegationId, Model model){
+    public String editDelegation(@PathVariable Long delegationId, Model model, Authentication auth){
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        Optional<User> userOpt = userService.getAllUsers().stream().filter(x-> x.getEmail().equals(userDetails.getUsername())).findFirst();
 
         Optional<Delegation> delegation = delegationService.getAllDelegations().stream()
                 .filter(x->x.getDelegationId()==delegationId)
@@ -288,7 +295,16 @@ public class WebController {
             if(delegation.get().getDateTimeStart().isAfter(LocalDateTime.now()))
             {
                 model.addAttribute("delegation", delegation.get());
-                model.addAttribute("APIKey", env.getProperty("mapy.api"));
+                if(
+                        (delegation.get().isDelegationAccepted() || delegation.get().isDelegationPending())
+                        ||
+                        ((delegation.get().getDelegant().getUserId()==userOpt.get().getUserId()))
+                )
+                {
+                    model.addAttribute("isEditable",false);
+                }else{
+                    model.addAttribute("isEditable",true);
+                }
                 return "editDelegationPage";
             }
         }
@@ -301,7 +317,7 @@ public class WebController {
         System.out.println("Tu sie cos wykonuje");
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         Optional<User> userOpt = userService.getAllUsers().stream().filter(x-> x.getEmail().equals(userDetails.getUsername())).findFirst();
-        if(userOpt.isPresent()){
+        if(userOpt.isPresent() && !delegation.isDelegationAccepted() && !delegation.isDelegationPending()){
             Long userId = userOpt.get().getUserId();
             delegationService.addDelegation(userId, delegation);
         }
@@ -436,14 +452,14 @@ public class WebController {
                     delegation.get().setDelegationAccepted(true);
                     delegation.get().setDelegationRequestCancel(false);
 
-                    emailSender.sendEmail(delegation.get().getDelegant().getEmail(), "Delegacja wysłana do akceptacji",
+                    emailSender.sendEmail(delegation.get().getDelegant().getEmail(), "Delegacja zaakceptowana",
                             "Cześć! <br> "
                                     + "Delegacja "+delegation.get().getDescription()+" została zaakceptowana :D");
                 }else{
                     delegation.get().setDelegationPending(false);
                     delegation.get().setDelegationAccepted(false);
                     delegation.get().setDelegationRequestCancel(false);
-                    emailSender.sendEmail(delegation.get().getDelegant().getEmail(), "Delegacja wysłana do akceptacji",
+                    emailSender.sendEmail(delegation.get().getDelegant().getEmail(), "Delegacja niezaakceptowana",
                             "Cześć! <br> "
                                     + "Delegacja "+delegation.get().getDescription()+" nie została zaakceptowana :C");
                 }
@@ -467,14 +483,14 @@ public class WebController {
                     delegation.get().setDelegationPending(false);
                     delegation.get().setDelegationAccepted(false);
                     delegation.get().setDelegationRequestCancel(false);
-                    emailSender.sendEmail(delegation.get().getDelegant().getEmail(), "Delegacja wysłana do akceptacji",
+                    emailSender.sendEmail(delegation.get().getDelegant().getEmail(), "Delegacja wycofana",
                             "Cześć! <br> "
                                     + "Prośba wycofania akceptacji delegacji "+delegation.get().getDescription()+" została zaakceptowana :D");
                 }else{
                     delegation.get().setDelegationPending(false);
                     delegation.get().setDelegationAccepted(true);
                     delegation.get().setDelegationRequestCancel(false);
-                    emailSender.sendEmail(delegation.get().getDelegant().getEmail(), "Delegacja wysłana do akceptacji",
+                    emailSender.sendEmail(delegation.get().getDelegant().getEmail(), "Delegacja niewycofana",
                             "Cześć! <br> "
                                     + "Prośba wycofania akceptacji delegacji "+delegation.get().getDescription()+"nie została zaakceptowana :C");
                 }
@@ -518,7 +534,7 @@ public class WebController {
         return "redirect:/admin/userList";
     }
     @PostMapping("/admin/editDelegation")
-    public String adminEditDelegationPost(@ModelAttribute Delegation delegation, @RequestParam String acceptationStatus, Authentication auth){
+    public String adminEditDelegationPost(@RequestParam String acceptationStatus, @ModelAttribute Delegation delegation){
         Optional<Delegation> del = delegationService.getAllDelegations().stream()
                 .filter(x->x.getDelegationId()==delegation.getDelegationId())
                 .findFirst();
@@ -529,7 +545,7 @@ public class WebController {
                 delegation.setDelegationAccepted(true);
                 delegation.setDelegationPending(false);
                 delegation.setDelegationRequestCancel(false);
-                emailSender.sendEmail(delegation.getDelegant().getEmail(), "Delegacja wysłana do akceptacji",
+                emailSender.sendEmail(delegation.getDelegant().getEmail(), "Delegacja zaakceptowana ręcznie",
                         "Cześć! <br> "
                                 + "Administrator zmienił status delegacji "+delegation.getDescription()+" na zaakceptowaną ręcznie.");
             }else if(acceptationStatus.equals("NOT ACCEPTED"))
@@ -537,9 +553,9 @@ public class WebController {
                 delegation.setDelegationAccepted(false);
                 delegation.setDelegationPending(false);
                 delegation.setDelegationRequestCancel(false);
-                emailSender.sendEmail(delegation.getDelegant().getEmail(), "Delegacja wysłana do akceptacji",
+                emailSender.sendEmail(delegation.getDelegant().getEmail(), "Delegacja odrzucona ręcznie",
                         "Cześć! <br> "
-                                + "Administrator zmienił status delegacji "+delegation.getDescription()+" na zaakceptowaną ręcznie.");
+                                + "Administrator zmienił status delegacji "+delegation.getDescription()+" na odrzuconą ręcznie.");
             }
             delegation.setDelegant(del.get().getDelegant());
             delegationService.refreshDelegation(delegation);
